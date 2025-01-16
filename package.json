@@ -1,0 +1,28 @@
+{
+  "name": "quiz-game-fullstack",
+  "version": "1.0.0",
+  "description": "Esta es la estructura base de tu proyecto:",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "jest --config jest.config.ts",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EduTebar97/quiz-game-fullstack.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EduTebar97/quiz-game-fullstack/issues"
+  },
+  "homepage": "https://github.com/EduTebar97/quiz-game-fullstack#readme",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}

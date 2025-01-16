@@ -1,0 +1,102 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./server
+      dockerfile: Dockerfile.dev
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./server:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm run dev
+    environment:
+      - NODE_ENV=development
+      - JWT_SECRET=your_jwt_secret_here
+      - MONGODB_URI=mongodb://mongodb:27017/quiz-game
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=quiz-game
+      - POSTGRES_HOST=postgres
+    networks:
+      - quiz-game-network
+    depends_on:
+      - mongodb
+      - postgres
+
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - quiz-game-network
+
+  postgres:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=quiz-game
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - quiz-game-network
+
+  frontend-dev:
+    build:
+      context: ./client
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+      - ./client/.env.development:/app/.env.development
+    environment:
+      - NODE_ENV=development
+      - VITE_API_URL=http://backend:8080
+      - VITE_WEBSOCKET_URL=ws://backend:8080
+      - CHOKIDAR_USEPOLLING=true
+    command: npm run dev -- --host --strictPort
+    depends_on:
+      - backend
+    networks:
+      - quiz-game-network
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "http://localhost:3000"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  frontend-prod:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    environment:
+      - NODE_ENV=production
+      - VITE_API_URL=http://backend:8080
+      - VITE_WEBSOCKET_URL=ws://backend:8080
+    depends_on:
+      - backend
+    networks:
+      - quiz-game-network
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "http://localhost:80"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  mongodb_data:
+  postgres_data:
+
+networks:
+  quiz-game-network:
+    driver: bridge

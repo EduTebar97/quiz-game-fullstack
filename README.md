@@ -1,8 +1,20 @@
 # Quiz Game Full Stack
 
-Esta es la estructura base de tu proyecto:
+## Descripción
+Este proyecto es una aplicación full-stack para gestionar un juego de preguntas y respuestas.
 
-- `client/`: Código del frontend (React, Vite, etc.)
-- `server/`: Código del backend (Node.js, Express, etc.)
-- `shared/`: Tipos y utilidades compartidas (TypeScript).
-- `docs/`: Documentación adicional, diagramas, ADRs, etc.
+## Estructura del Proyecto
+- `client/`: Frontend basado en React.
+- `server/`: Backend basado en Node.js.
+- `shared/`: Código compartido entre cliente y servidor.
+- `docs/`: Documentación.
+
+## Requisitos
+- Node.js (LTS)
+- Git
+- Docker (opcional)
+
+## Configuración
+1. Clona el repositorio:
+   ```bash
+   git clone git@github.com:EduTebar97/quiz-game-fullstack.git
